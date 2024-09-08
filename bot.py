@@ -6,8 +6,6 @@ from uuid import uuid4
 from kl import API_KEY
 
 
-
-
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
