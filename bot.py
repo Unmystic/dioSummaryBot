@@ -1,6 +1,7 @@
 import logging
 from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler,filters, InlineQueryHandler
+from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler,filters, InlineQueryHandler, Application
+from db_requests import hackernews_yesterday
 
 from uuid import uuid4
 from kl import API_KEY
@@ -22,7 +23,12 @@ async def caps(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=text_caps)
 
 async def hackernews(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    yday = hackernews_yesterday(10)
+    print(yday)
+    for post in yday:
+        message = f'<a href="{post[1]}">{post[0]}</a>'
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=message, parse_mode='HTML')
+          
     
 async def inline_caps(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.inline_query.query
